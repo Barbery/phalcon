@@ -1,0 +1,65 @@
+<!doctype html>
+<html ng-app="admin">
+<head>
+    <title>login</title>
+    <link href="<?php echo $this->url->getStatic('css/bootstrap.min.css'); ?>" rel="stylesheet" />
+    <link href="<?php echo $this->url->getStatic('css/bootstrap-responsive.min.css'); ?>" rel="stylesheet" />
+
+    <link rel="stylesheet" href="<?php echo $this->url->getStatic('css/font-awesome.min.css'); ?>" />
+
+
+    <!-- angular js -->
+    <script src="<?php echo $this->url->getStatic('lib/angular/angular.min.js'); ?>"></script>
+    <script src="<?php echo $this->url->getStatic('lib/angular/angular-resource.min.js'); ?>"></script>
+    <script src="<?php echo $this->url->getStatic('lib/angular/angular-route.min.js'); ?>"></script>
+    <script src="<?php echo $this->url->getStatic('js/admin/app.js'); ?>"></script>
+    <script src="<?php echo $this->url->getStatic('js/admin/controllers.js'); ?>"></script>
+    <script src="<?php echo $this->url->getStatic('js/admin/directives.js'); ?>"></script>
+    <script src="<?php echo $this->url->getStatic('js/admin/filters.js'); ?>"></script>
+    <script src="<?php echo $this->url->getStatic('js/admin/services.js'); ?>"></script>
+
+</head>
+<body ng-controller="Login">
+<div class="container">
+    <div class="span6 offset3" style="background-color: rgb(240, 240, 240);padding-top: 20px;margin-top: 100px;">
+    <form name="loginForm" ng-submit="isFilled(loginForm)" class="form-horizontal" method="POST">
+        <div class="control-group {{loginForm.username.$error.required ? 'warning' : ''}} ">
+            <label class="control-label" for="username">username: </label>
+            <div class="controls">
+                <input type="text" ng-model="user.username" name="username" id="username" placeholder="username" required>
+                <span ng-show="loginForm.username.$error.required" class="help-inline">username is required</span>
+            </div>
+        </div>
+        <div class="control-group {{loginForm.password.$error.required ? 'warning' : ''}}">
+            <label class="control-label" for="password">password: </label>
+            <div class="controls">
+                <input type="password" ng-model="user.password" name="password" id="password" placeholder="password" required>
+                <span ng-show="loginForm.password.$error.required" class="help-inline">password is required</span>
+            </div>
+        </div>
+        <div class="control-group {{user.codeError.status==0 ? 'error' : ''}}">
+            <label class="control-label" for="code">验证码: </label>
+            <div class="controls">
+                <input ng-model="user.code" ng-blur="isErrCode(user.code)" class="span1" type="text" name="code" id="code" placeholder="验证码" required>
+                <img src="<?php echo $this->url->get('admin/index/captcha'); ?>"/>
+                <span ng-show="user.codeError.status==0" class="help-inline">{{user.codeError.msg || "验证码错误"}}</span>
+            </div>
+        </div>
+
+        <div class="control-group">
+        <div class="controls">
+        <span ng-hide="error.status" class="help-inline" style="color:red;font-size:16px;">{{error.msg}}</span>
+            <label class="checkbox">
+                <input type="checkbox" name="remember" /> Remember me
+            </label>
+            <button type="submit" class="btn btn-primary">Sign in</button>
+
+        </div>
+        </div>
+        <input type="hidden" ng-model="user.action" value="<?php echo $this->url->get('admin/index/loginPost'); ?>" />
+    </form>
+    </div>
+</div>
+
+</body>
+</html>
