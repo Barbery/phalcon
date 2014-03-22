@@ -1,7 +1,8 @@
 <?php
 
-$router = new Phalcon\Mvc\Router\Annotations();
+$router = new \Phalcon\Mvc\Router\Annotations(false);
 $router->setDefaultModule('index');
+$router->setDefaultNamespace('Ishgo\Index\Controllers');
 
 # 设置admin url映射
 $router->add('/admin', array(
@@ -44,6 +45,6 @@ $router->add('/work/:controller/:action/:params', array(
     'params'     => 3
 ));
 
-$router->addModuleResource('index', 'User', '/api/users');
 
+$router->addModuleResource('index', 'Ishgo\Index\Controllers\User', '/api/users');
 return $router;

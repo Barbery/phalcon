@@ -4,10 +4,10 @@ namespace Ishgo\Index\Controllers;
 /**
  * @RoutePrefix("/api/users")
  */
-class UserController extends \Phalcon\Mvc\Controller
+class UserController extends CommonController
 {
     /**
-     * @Get("/{id:\d*}")
+     * @Get("/?{id:\d*}")
      */
     public function indexAction($id=0)
     {
@@ -16,7 +16,6 @@ class UserController extends \Phalcon\Mvc\Controller
         } else {
             echo 'user by id:' . $id;
         }
-        
     }
 
 

@@ -16,16 +16,6 @@ class Module implements ModuleDefinitionInterface
     public function registerAutoloaders()
     {
 
-        $loader = new Loader();
-
-        $loader->registerNamespaces(
-            array(
-                'Ishgo\Admin\Controllers' => APP_PATH . '/admin/controllers/',
-                'Ishgo\Admin\Models'      => APP_PATH . '/admin/models/',
-            )
-        );
-
-        $loader->register();
     }
 
     /**

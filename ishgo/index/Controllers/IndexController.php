@@ -9,6 +9,11 @@ class IndexController extends CommonController
     {
         echo '<h1>hello world!</h1>';
         echo \Phalcon\Tag::linkTo('signup', 'sign up here');
+
+        parse_str(file_get_contents("php://input"), $post_vars);
+        print_r($post_vars);
+        print_r($_SERVER);
+
         $this->view->disable();
     }
 

@@ -15,17 +15,7 @@ class Module implements ModuleDefinitionInterface
      */
     public function registerAutoloaders()
     {
-
-        $loader = new Loader();
-
-        $loader->registerNamespaces(
-            array(
-                'Ishgo\Index\Controllers' => APP_PATH . '/index/controllers/',
-                'Ishgo\Index\Models'      => APP_PATH . '/index/models/',
-            )
-        );
-
-        $loader->register();
+        
     }
 
     /**

@@ -1,9 +1,9 @@
 <?php
 
-use \Phalcon\Mvc\Router,
-    \Phalcon\Mvc\Application,
-    \Phalcon\DI\FactoryDefault,
-    \Phalcon\Db\Adapter\Pdo\Mysql;
+use Phalcon\Loader,
+    Phalcon\Mvc\Application,
+    Phalcon\DI\FactoryDefault,
+    Phalcon\Db\Adapter\Pdo\Mysql;
 
 try {
 
@@ -11,54 +11,23 @@ try {
     define('ROOT_PATH', dirname(__DIR__));
     define('APP_PATH', ROOT_PATH . '/ishgo');
 
+    //register namespaces
+    $loader = new Loader();
+    $loader->registerNamespaces(
+        array(
+            'Ishgo\Work\Controllers'  => APP_PATH . '/work/controllers/',
+            'Ishgo\Work\Models'       => APP_PATH . '/work/models/',
+            'Ishgo\Index\Controllers' => APP_PATH . '/index/controllers/',
+            'Ishgo\Index\Models'      => APP_PATH . '/index/models/',
+            'Ishgo\Admin\Controllers' => APP_PATH . '/admin/controllers/',
+            'Ishgo\Admin\Models'      => APP_PATH . '/admin/models/',
+        )
+    );
+    $loader->register();
+
     $di = new FactoryDefault();
     $di->set('router', function () {
-        $router = new \Phalcon\Mvc\Router\Annotations();
-        $router->setDefaultModule('index');
-
-        # 设置admin url映射
-        $router->add('/admin', array(
-            'module' => 'admin',
-            'action' => 'index',
-            'params' => 'index'
-        ));
-
-        $router->add('/admin/:controller', array(
-            'module'     => 'admin',
-            'controller' => 1,
-            'action'     => 'index'
-        ));
-
-        $router->add('/admin/:controller/:action/:params', array(
-            'module'     => 'admin',
-            'controller' => 1,
-            'action'     => 2,
-            'params'     => 3
-        ));
-
-
-        # 设置work url映射
-        $router->add('/work', array(
-            'module' => 'work',
-            'action' => 'index',
-            'params' => 'index'
-        ));
-
-        $router->add('/work/:controller', array(
-            'module'     => 'work',
-            'controller' => 1,
-            'action'     => 'index'
-        ));
-
-        $router->add('/work/:controller/:action/:params', array(
-            'module'     => 'work',
-            'controller' => 1,
-            'action'     => 2,
-            'params'     => 3
-        ));
-
-        $router->addModuleResource('index', 'User', '/api/users');
-        return $router;
+        return include ROOT_PATH . '/config/routes.php';
     });
 
 
@@ -71,6 +40,18 @@ try {
         ));
     });
 
+    // $di['test'] = function(){
+    //     return new Redis();
+    // };
+
+    $di->set('test', function() {
+        return new Redis();
+    });
+
+    $di->set('annotations', function(){
+        include ROOT_PATH . '/libraries/RedisAdapter.php';
+        return new RedisAdapter(); 
+    });
 
     //Create an application
     $application = new Application($di);
@@ -92,6 +73,8 @@ try {
             )
         )
     );
+
+
 
     //add common functions
     include APP_PATH . '/functions.php';
